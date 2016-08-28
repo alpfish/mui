@@ -1,6 +1,7 @@
 /*!
  * =====================================================
  * Mui v3.0.0 (http://dev.dcloud.net.cn/mui)
+ * Licensed under MIT | 2016-08-28T18:01:30+0800
  * =====================================================
  */
 /**
@@ -474,12 +475,12 @@ var mui = (function(document, undefined) {
 		if (plus) {
 			this.os.plus = true;
 			$(function() {
-				document.body.classList.add('mui-plus');
+				document.body.classList.add($.className('plus'));
 			});
 			if (ua.match(/StreamApp/i)) { //TODO 最好有流应用自己的标识
 				this.os.stream = true;
 				$(function() {
-					document.body.classList.add('mui-plus-stream');
+					document.body.classList.add($.className('plus-stream'));
 				});
 			}
 		}
@@ -558,7 +559,7 @@ var mui = (function(document, undefined) {
 				if (target === element) {
 					break;
 				}
-				if (~['click', 'tap', 'doubletap', 'longtap', 'hold'].indexOf(event) && (target.disabled || target.classList.contains('mui-disabled'))) {
+				if (~['click', 'tap', 'doubletap', 'longtap', 'hold'].indexOf(event) && (target.disabled || target.classList.contains($.className('disabled')))) {
 					break;
 				}
 				var matches = {};
@@ -995,11 +996,11 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 		if (!$.os.ios) {
 			return;
 		}
-		var CLASS_FOCUSIN = 'mui-focusin';
-		var CLASS_BAR_TAB = 'mui-bar-tab';
-		var CLASS_BAR_FOOTER = 'mui-bar-footer';
-		var CLASS_BAR_FOOTER_SECONDARY = 'mui-bar-footer-secondary';
-		var CLASS_BAR_FOOTER_SECONDARY_TAB = 'mui-bar-footer-secondary-tab';
+		var CLASS_FOCUSIN = $.className('focusin');
+		var CLASS_BAR_TAB = $.className('bar-tab');
+		var CLASS_BAR_FOOTER = $.className('bar-footer');
+		var CLASS_BAR_FOOTER_SECONDARY = $.className('bar-footer-secondary');
+		var CLASS_BAR_FOOTER_SECONDARY_TAB = $.className('bar-footer-secondary-tab');
 		// var content = document.querySelector('.' + CLASS_CONTENT);
 		// if (content) {
 		// 	document.body.insertBefore(content, document.body.firstElementChild);
@@ -1658,7 +1659,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 					return;
 				}
 				var target = session.target;
-				if (!target || (target.disabled || (target.classList && target.classList.contains('mui-disabled')))) {
+				if (!target || (target.disabled || (target.classList && target.classList.contains($.className('disabled'))))) {
 					return;
 				}
 				if (touch.distance < options.tapMaxDistance && touch.deltaTime < options.tapMaxTime) {
@@ -1922,7 +1923,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 	});
 	var createIframe = function(options) {
 		var wrapper = document.createElement('div');
-		wrapper.className = 'mui-iframe-wrapper';
+		wrapper.className = $.className('iframe-wrapper');
 		var styles = options.styles || {};
 		if (typeof styles.top !== 'string') {
 			styles.top = '0px';
@@ -1968,20 +1969,20 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 				os: 'ios',
 				version: $.os.version
 			});
-			classList.add('mui-ios');
+			classList.add($.className('ios'));
 		} else if ($.os.android) {
 			os.push({
 				os: 'android',
 				version: $.os.version
 			});
-			classList.add('mui-android');
+			classList.add($.className('android'));
 		}
 		if ($.os.wechat) {
 			os.push({
 				os: 'wechat',
 				version: $.os.wechat.version
 			});
-			classList.add('mui-wechat');
+			classList.add($.className('wechat'));
 		}
 		if (os.length) {
 			$.each(os, function(index, osObj) {
@@ -2505,7 +2506,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 	$.ready(function() {
 		//标识当前环境支持statusbar
 		if ($.supportStatusbarOffset()) {
-			document.body.classList.add('mui-statusbar');
+			document.body.classList.add($.className('statusbar'));
 		}
 	});
 })(mui);
@@ -2551,7 +2552,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 	};
 	window.addEventListener('tap', function(e) {
 		var action = $.targets.action;
-		if (action && action.classList.contains('mui-action-back')) {
+		if (action && action.classList.contains($.className('action-back'))) {
 			$.back();
 			$.targets.action = false;
 		}
@@ -2578,12 +2579,12 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 			handle: function() {
 				//后续重新设计此处，将back放到各个空间内部实现
 				//popover
-				if ($.targets._popover && $.targets._popover.classList.contains('mui-active')) {
+				if ($.targets._popover && $.targets._popover.classList.contains($.className('active'))) {
 					$($.targets._popover).popover('hide');
 					return true;
 				}
 				//offcanvas
-				var offCanvas = document.querySelector('.mui-off-canvas-wrap.mui-active');
+				var offCanvas = document.querySelector($.classSelector('.off-canvas-wrap.active'));
 				if (offCanvas) {
 					$(offCanvas).offCanvas('close');
 					return true;
@@ -2640,7 +2641,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 
 
 	$.menu = function() {
-		var menu = document.querySelector('.mui-action-menu');
+		var menu = document.querySelector($.classSelector('.action-menu'));
 		if (menu) {
 			$.trigger(menu, $.EVENT_START); //临时处理menu无touchstart的话，找不到当前targets的问题
 			$.trigger(menu, 'tap');
@@ -3156,22 +3157,22 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 	$.Class = Class;
 })(mui);
 (function($, document, undefined) {
-	var CLASS_PULL_TOP_POCKET = 'mui-pull-top-pocket';
-	var CLASS_PULL_BOTTOM_POCKET = 'mui-pull-bottom-pocket';
-	var CLASS_PULL = 'mui-pull';
-	var CLASS_PULL_LOADING = 'mui-pull-loading';
-	var CLASS_PULL_CAPTION = 'mui-pull-caption';
-	var CLASS_PULL_CAPTION_DOWN = 'mui-pull-caption-down';
-	var CLASS_PULL_CAPTION_REFRESH = 'mui-pull-caption-refresh';
-	var CLASS_PULL_CAPTION_NOMORE = 'mui-pull-caption-nomore';
+	var CLASS_PULL_TOP_POCKET = $.className('pull-top-pocket');
+	var CLASS_PULL_BOTTOM_POCKET = $.className('pull-bottom-pocket');
+	var CLASS_PULL = $.className('pull');
+	var CLASS_PULL_LOADING = $.className('pull-loading');
+	var CLASS_PULL_CAPTION = $.className('pull-caption');
+	var CLASS_PULL_CAPTION_DOWN = $.className('pull-caption-down');
+	var CLASS_PULL_CAPTION_REFRESH = $.className('pull-caption-refresh');
+	var CLASS_PULL_CAPTION_NOMORE = $.className('pull-caption-nomore');
 
-	var CLASS_ICON = 'mui-icon';
-	var CLASS_SPINNER = 'mui-spinner';
-	var CLASS_ICON_PULLDOWN = 'mui-icon-pulldown';
+	var CLASS_ICON = $.className('icon');
+	var CLASS_SPINNER = $.className('spinner');
+	var CLASS_ICON_PULLDOWN = $.className('icon-pulldown');
 
-	var CLASS_BLOCK = 'mui-block';
-	var CLASS_HIDDEN = 'mui-hidden';
-	var CLASS_VISIBILITY = 'mui-visibility';
+	var CLASS_BLOCK = $.className('block');
+	var CLASS_HIDDEN = $.className('hidden');
+	var CLASS_VISIBILITY = $.className('visibility');
 
 	var CLASS_LOADING_UP = CLASS_PULL_LOADING + ' ' + CLASS_ICON + ' ' + CLASS_ICON_PULLDOWN;
 	var CLASS_LOADING_DOWN = CLASS_PULL_LOADING + ' ' + CLASS_ICON + ' ' + CLASS_ICON_PULLDOWN;
@@ -3336,13 +3337,13 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 	$.PullRefresh = PullRefresh;
 })(mui, document);
 (function($, window, document, undefined) {
-	var CLASS_SCROLL = 'mui-scroll';
-	var CLASS_SCROLLBAR = 'mui-scrollbar';
-	var CLASS_INDICATOR = 'mui-scrollbar-indicator';
+	var CLASS_SCROLL = $.className('scroll');
+	var CLASS_SCROLLBAR = $.className('scrollbar');
+	var CLASS_INDICATOR = $.className('scrollbar-indicator');
 	var CLASS_SCROLLBAR_VERTICAL = CLASS_SCROLLBAR + '-vertical';
 	var CLASS_SCROLLBAR_HORIZONTAL = CLASS_SCROLLBAR + '-horizontal';
 
-	var CLASS_ACTIVE = 'mui-active';
+	var CLASS_ACTIVE = $.className('active');
 
 	var ease = {
 		quadratic: {
@@ -3561,7 +3562,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 			if (this.options.scrollX) {
 				this.wrapper[action]('swiperight', this);
 			}
-			var segmentedControl = this.wrapper.querySelector('.mui-segmented-control');
+			var segmentedControl = this.wrapper.querySelector($.classSelector('.segmented-control'));
 			if (segmentedControl) { //靠，这个bug排查了一下午，阻止hash跳转，一旦hash跳转会导致可拖拽选项卡的tab不见
 				mui(segmentedControl)[detach ? 'off' : 'on']('click', 'a', $.preventDefault);
 			}
@@ -4255,12 +4256,12 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 			if (!id) {
 				id = ++$.uuid;
 				var _options = $.extend({}, options);
-				if (self.classList.contains('mui-segmented-control')) {
+				if (self.classList.contains($.className('segmented-control'))) {
 					_options = $.extend(_options, {
 						scrollY: false,
 						scrollX: true,
 						indicators: false,
-						snap: '.mui-control-item'
+						snap: $.classSelector('.control-item')
 					});
 				}
 				$.data[id] = scrollApi = new Scroll(self, _options);
@@ -4275,8 +4276,8 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 })(mui, window, document);
 (function($, window, document, undefined) {
 
-	var CLASS_VISIBILITY = 'mui-visibility';
-	var CLASS_HIDDEN = 'mui-hidden';
+	var CLASS_VISIBILITY = $.className('visibility');
+	var CLASS_HIDDEN = $.className('hidden');
 
 	var PullRefresh = $.Scroll.extend($.extend({
 		handleEvent: function(e) {
@@ -4393,7 +4394,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 		},
 		disablePullupToRefresh: function() {
 			this._initPullupRefresh();
-			this.bottomPocket.className = 'mui-pull-bottom-pocket' + ' ' + CLASS_HIDDEN;
+			this.bottomPocket.className = $.className('pull-bottom-pocket') + ' ' + CLASS_HIDDEN;
 			this.wrapper.removeEventListener('scrollbottom', this);
 		},
 		enablePullupToRefresh: function() {
@@ -4445,19 +4446,19 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
  * @param {Object} window
  */
 (function($, window) {
-	var CLASS_SLIDER = 'mui-slider';
-	var CLASS_SLIDER_GROUP = 'mui-slider-group';
-	var CLASS_SLIDER_LOOP = 'mui-slider-loop';
-	var CLASS_SLIDER_INDICATOR = 'mui-slider-indicator';
-	var CLASS_ACTION_PREVIOUS = 'mui-action-previous';
-	var CLASS_ACTION_NEXT = 'mui-action-next';
-	var CLASS_SLIDER_ITEM = 'mui-slider-item';
+	var CLASS_SLIDER = $.className('slider');
+	var CLASS_SLIDER_GROUP = $.className('slider-group');
+	var CLASS_SLIDER_LOOP = $.className('slider-loop');
+	var CLASS_SLIDER_INDICATOR = $.className('slider-indicator');
+	var CLASS_ACTION_PREVIOUS = $.className('action-previous');
+	var CLASS_ACTION_NEXT = $.className('action-next');
+	var CLASS_SLIDER_ITEM = $.className('slider-item');
 
-	var CLASS_ACTIVE = 'mui-active';
+	var CLASS_ACTIVE = $.className('active');
 
 	var SELECTOR_SLIDER_ITEM = '.' + CLASS_SLIDER_ITEM;
 	var SELECTOR_SLIDER_INDICATOR = '.' + CLASS_SLIDER_INDICATOR;
-	var SELECTOR_SLIDER_PROGRESS_BAR = '.mui-slider-progress-bar';
+	var SELECTOR_SLIDER_PROGRESS_BAR = $.classSelector('.slider-progress-bar');
 
 	var Slider = $.Slider = $.Scroll.extend({
 		init: function(element, options) {
@@ -4536,7 +4537,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 			if (self.loop) {
 				_slideNumber += 1;
 			}
-			if (!self.wrapper.classList.contains('mui-segmented-control')) {
+			if (!self.wrapper.classList.contains($.className('segmented-control'))) {
 				for (var i = 0, len = items.length; i < len; i++) {
 					var item = items[i];
 					if (item.parentNode === self.scroller) {
@@ -4548,22 +4549,22 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 					}
 				}
 			}
-			var indicatorWrap = self.wrapper.querySelector('.mui-slider-indicator');
+			var indicatorWrap = self.wrapper.querySelector($.classSelector('.slider-indicator'));
 			if (indicatorWrap) {
 				if (indicatorWrap.getAttribute('data-scroll')) { //scroll
 					$(indicatorWrap).scroll().gotoPage(detail.slideNumber);
 				}
-				var indicators = indicatorWrap.querySelectorAll('.mui-indicator');
+				var indicators = indicatorWrap.querySelectorAll($.classSelector('.indicator'));
 				if (indicators.length > 0) { //图片轮播
 					for (var i = 0, len = indicators.length; i < len; i++) {
 						indicators[i].classList[i === detail.slideNumber ? 'add' : 'remove'](CLASS_ACTIVE);
 					}
 				} else {
-					var number = indicatorWrap.querySelector('.mui-number span');
+					var number = indicatorWrap.querySelector($.classSelector('.number span'));
 					if (number) { //图文表格
 						number.innerText = (detail.slideNumber + 1);
 					} else { //segmented controls
-						var controlItems = indicatorWrap.querySelectorAll('.mui-control-item');
+						var controlItems = indicatorWrap.querySelectorAll($.classSelector('.control-item'));
 						for (var i = 0, len = controlItems.length; i < len; i++) {
 							controlItems[i].classList[i === detail.slideNumber ? 'add' : 'remove'](CLASS_ACTIVE);
 						}
@@ -4834,12 +4835,12 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 	};
 	$.ready(function() {
 		//		setTimeout(function() {
-		$('.mui-slider').slider();
-		$('.mui-scroll-wrapper.mui-slider-indicator.mui-segmented-control').scroll({
+		$($.classSelector('.slider')).slider();
+		$($.classSelector('.scroll-wrapper.slider-indicator.segmented-control')).scroll({
 			scrollY: false,
 			scrollX: true,
 			indicators: false,
-			snap: '.mui-control-item'
+			snap: $.classSelector('.control-item')
 		});
 		//		}, 500); //临时处理slider宽度计算不正确的问题(初步确认是scrollbar导致的)
 
@@ -4854,15 +4855,15 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 	if (!($.os.plus && $.os.android)) { //仅在android的5+版本使用
 		return;
 	}
-	var CLASS_PLUS_PULLREFRESH = 'mui-plus-pullrefresh';
-	var CLASS_VISIBILITY = 'mui-visibility';
-	var CLASS_HIDDEN = 'mui-hidden';
-	var CLASS_BLOCK = 'mui-block';
+	var CLASS_PLUS_PULLREFRESH = $.className('plus-pullrefresh');
+	var CLASS_VISIBILITY = $.className('visibility');
+	var CLASS_HIDDEN = $.className('hidden');
+	var CLASS_BLOCK = $.className('block');
 
-	var CLASS_PULL_CAPTION = 'mui-pull-caption';
-	var CLASS_PULL_CAPTION_DOWN = 'mui-pull-caption-down';
-	var CLASS_PULL_CAPTION_REFRESH = 'mui-pull-caption-refresh';
-	var CLASS_PULL_CAPTION_NOMORE = 'mui-pull-caption-nomore';
+	var CLASS_PULL_CAPTION = $.className('pull-caption');
+	var CLASS_PULL_CAPTION_DOWN = $.className('pull-caption-down');
+	var CLASS_PULL_CAPTION_REFRESH = $.className('pull-caption-refresh');
+	var CLASS_PULL_CAPTION_NOMORE = $.className('pull-caption-nomore');
 
 	var PlusPullRefresh = $.Class.extend({
 		init: function(element, options) {
@@ -5057,7 +5058,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 		},
 		disablePullupToRefresh: function() {
 			this._initPullupRefresh();
-			this.bottomPocket.className = 'mui-pull-bottom-pocket' + ' ' + CLASS_HIDDEN;
+			this.bottomPocket.className = $.className('pull-bottom-pocket') + ' ' + CLASS_HIDDEN;
 			window.removeEventListener('dragup', this);
 		},
 		enablePullupToRefresh: function() {
@@ -5123,18 +5124,18 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
  * @returns {undefined}
  */
 (function($, window, document, name) {
-	var CLASS_OFF_CANVAS_LEFT = 'mui-off-canvas-left';
-	var CLASS_OFF_CANVAS_RIGHT = 'mui-off-canvas-right';
-	var CLASS_ACTION_BACKDROP = 'mui-off-canvas-backdrop';
-	var CLASS_OFF_CANVAS_WRAP = 'mui-off-canvas-wrap';
+	var CLASS_OFF_CANVAS_LEFT = $.className('off-canvas-left');
+	var CLASS_OFF_CANVAS_RIGHT = $.className('off-canvas-right');
+	var CLASS_ACTION_BACKDROP = $.className('off-canvas-backdrop');
+	var CLASS_OFF_CANVAS_WRAP = $.className('off-canvas-wrap');
 
-	var CLASS_SLIDE_IN = 'mui-slide-in';
-	var CLASS_ACTIVE = 'mui-active';
+	var CLASS_SLIDE_IN = $.className('slide-in');
+	var CLASS_ACTIVE = $.className('active');
 
 
-	var CLASS_TRANSITIONING = 'mui-transitioning';
+	var CLASS_TRANSITIONING = $.className('transitioning');
 
-	var SELECTOR_INNER_WRAP = '.mui-inner-wrap';
+	var SELECTOR_INNER_WRAP = $.classSelector('.inner-wrap');
 
 
 	var OffCanvas = $.Class.extend({
@@ -5151,7 +5152,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 						tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|VIDEO)$/
 					},
 				}, options);
-				document.body.classList.add('mui-fullscreen'); //fullscreen
+				document.body.classList.add($.className('fullscreen')); //fullscreen
 				this.refresh();
 				this.initEvent();
 			}
@@ -5167,7 +5168,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 		refresh: function(offCanvas) {
 			//			offCanvas && !offCanvas.classList.contains(CLASS_ACTIVE) && this.classList.remove(CLASS_ACTIVE);
 			this.slideIn = this.classList.contains(CLASS_SLIDE_IN);
-			this.scalable = this.classList.contains('mui-scalable') && !this.slideIn;
+			this.scalable = this.classList.contains($.className('scalable')) && !this.slideIn;
 			this.scroller = this.wrapper.querySelector(SELECTOR_INNER_WRAP);
 			//			!offCanvas && this.scroller.classList.remove(CLASS_TRANSITIONING);
 			//			!offCanvas && this.scroller.setAttribute('style', '');
@@ -5390,7 +5391,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 					e.detail.gesture.preventDefault();
 				});
 			}
-			if (this.classList.contains('mui-draggable')) {
+			if (this.classList.contains($.className('draggable'))) {
 				this.wrapper.addEventListener($.EVENT_START, this); //临时处理
 				this.wrapper.addEventListener('drag', this);
 				this.wrapper.addEventListener('dragend', this);
@@ -5676,7 +5677,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 		return offCanvasApis.length === 1 ? offCanvasApis[0] : offCanvasApis;
 	};
 	$.ready(function() {
-		$('.mui-off-canvas-wrap').offCanvas();
+		$($.classSelector('.off-canvas-wrap')).offCanvas();
 	});
 })(mui, window, document, 'offcanvas');
 /**
@@ -5686,7 +5687,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
  * @returns {undefined}
  */
 (function($, name) {
-	var CLASS_ACTION = 'mui-action';
+	var CLASS_ACTION = $.className('action');
 
 	var handle = function(event, target) {
 		var className = target.className || '';
@@ -5694,7 +5695,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 			className = '';
 		}
 		if (className && ~className.indexOf(CLASS_ACTION)) {
-			if (target.classList.contains('mui-action-back')) {
+			if (target.classList.contains($.className('action-back'))) {
 				event.preventDefault();
 			}
 			return target;
@@ -5720,7 +5721,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
  * @returns {undefined}
  */
 (function($, window, document, name) {
-	var CLASS_MODAL = 'mui-modal';
+	var CLASS_MODAL = $.className('modal');
 
 	var handle = function(event, target) {
 		if (target.tagName === 'A' && target.hash) {
@@ -5744,7 +5745,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 	window.addEventListener('tap', function(event) {
 		if ($.targets.modal) {
 			event.detail.gesture.preventDefault(); //fixed hashchange
-			$.targets.modal.classList.toggle('mui-active');
+			$.targets.modal.classList.toggle($.className('active'));
 		}
 	});
 })(mui, window, document, 'modal');
@@ -5759,15 +5760,15 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
  */
 (function($, window, document, name) {
 
-	var CLASS_POPOVER = 'mui-popover';
-	var CLASS_POPOVER_ARROW = 'mui-popover-arrow';
-	var CLASS_ACTION_POPOVER = 'mui-popover-action';
-	var CLASS_BACKDROP = 'mui-backdrop';
-	var CLASS_BAR_POPOVER = 'mui-bar-popover';
-	var CLASS_BAR_BACKDROP = 'mui-bar-backdrop';
-	var CLASS_ACTION_BACKDROP = 'mui-backdrop-action';
-	var CLASS_ACTIVE = 'mui-active';
-	var CLASS_BOTTOM = 'mui-bottom';
+	var CLASS_POPOVER = $.className('popover');
+	var CLASS_POPOVER_ARROW = $.className('popover-arrow');
+	var CLASS_ACTION_POPOVER = $.className('popover-action');
+	var CLASS_BACKDROP = $.className('backdrop');
+	var CLASS_BAR_POPOVER = $.className('bar-popover');
+	var CLASS_BAR_BACKDROP = $.className('bar-backdrop');
+	var CLASS_ACTION_BACKDROP = $.className('backdrop-action');
+	var CLASS_ACTIVE = $.className('active');
+	var CLASS_BOTTOM = $.className('bottom');
 
 
 
@@ -5866,7 +5867,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 		popover.removeEventListener('webkitTransitionEnd', onPopoverHidden);
 		backdrop.classList.remove(CLASS_BAR_BACKDROP);
 		backdrop.classList.remove(CLASS_ACTION_BACKDROP);
-		var _popover = document.querySelector('.mui-popover.mui-active');
+		var _popover = document.querySelector($.classSelector('.popover.active'));
 		if (_popover) {
 			//			_popover.setAttribute('style', '');
 			_popover.addEventListener('webkitTransitionEnd', onPopoverHidden);
@@ -6045,13 +6046,13 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
  */
 (function($, window, document, name, undefined) {
 
-	var CLASS_CONTROL_ITEM = 'mui-control-item';
-	var CLASS_SEGMENTED_CONTROL = 'mui-segmented-control';
-	var CLASS_SEGMENTED_CONTROL_VERTICAL = 'mui-segmented-control-vertical';
-	var CLASS_CONTROL_CONTENT = 'mui-control-content';
-	var CLASS_TAB_BAR = 'mui-bar-tab';
-	var CLASS_TAB_ITEM = 'mui-tab-item';
-	var CLASS_SLIDER_ITEM = 'mui-slider-item';
+	var CLASS_CONTROL_ITEM = $.className('control-item');
+	var CLASS_SEGMENTED_CONTROL = $.className('segmented-control');
+	var CLASS_SEGMENTED_CONTROL_VERTICAL = $.className('segmented-control-vertical');
+	var CLASS_CONTROL_CONTENT = $.className('control-content');
+	var CLASS_TAB_BAR = $.className('bar-tab');
+	var CLASS_TAB_ITEM = $.className('tab-item');
+	var CLASS_SLIDER_ITEM = $.className('slider-item');
 
 	var handle = function(event, target) {
 		if (target.classList && (target.classList.contains(CLASS_CONTROL_ITEM) || target.classList.contains(CLASS_TAB_ITEM))) {
@@ -6083,7 +6084,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 		var activeTab;
 		var activeBodies;
 		var targetBody;
-		var className = 'mui-active';
+		var className = $.className('active');
 		var classSelector = '.' + className;
 		var segmentedControl = targetTab.parentNode;
 
@@ -6150,12 +6151,12 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
  */
 (function($, window, name) {
 
-	var CLASS_SWITCH = 'mui-switch';
-	var CLASS_SWITCH_HANDLE = 'mui-switch-handle';
-	var CLASS_ACTIVE = 'mui-active';
-	var CLASS_DRAGGING = 'mui-dragging';
+	var CLASS_SWITCH = $.className('switch');
+	var CLASS_SWITCH_HANDLE = $.className('switch-handle');
+	var CLASS_ACTIVE = $.className('active');
+	var CLASS_DRAGGING = $.className('dragging');
 
-	var CLASS_DISABLED = 'mui-disabled';
+	var CLASS_DISABLED = $.className('disabled');
 
 	var SELECTOR_SWITCH_HANDLE = '.' + CLASS_SWITCH_HANDLE;
 
@@ -6321,20 +6322,20 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
  */
 (function($, window, document) {
 
-	var CLASS_ACTIVE = 'mui-active';
-	var CLASS_SELECTED = 'mui-selected';
-	var CLASS_GRID_VIEW = 'mui-grid-view';
-	var CLASS_RADIO_VIEW = 'mui-table-view-radio';
-	var CLASS_TABLE_VIEW_CELL = 'mui-table-view-cell';
-	var CLASS_COLLAPSE_CONTENT = 'mui-collapse-content';
-	var CLASS_DISABLED = 'mui-disabled';
-	var CLASS_TOGGLE = 'mui-switch';
-	var CLASS_BTN = 'mui-btn';
+	var CLASS_ACTIVE = $.className('active');
+	var CLASS_SELECTED = $.className('selected');
+	var CLASS_GRID_VIEW = $.className('grid-view');
+	var CLASS_RADIO_VIEW = $.className('table-view-radio');
+	var CLASS_TABLE_VIEW_CELL = $.className('table-view-cell');
+	var CLASS_COLLAPSE_CONTENT = $.className('collapse-content');
+	var CLASS_DISABLED = $.className('disabled');
+	var CLASS_TOGGLE = $.className('switch');
+	var CLASS_BTN = $.className('btn');
 
-	var CLASS_SLIDER_HANDLE = 'mui-slider-handle';
-	var CLASS_SLIDER_LEFT = 'mui-slider-left';
-	var CLASS_SLIDER_RIGHT = 'mui-slider-right';
-	var CLASS_TRANSITIONING = 'mui-transitioning';
+	var CLASS_SLIDER_HANDLE = $.className('slider-handle');
+	var CLASS_SLIDER_LEFT = $.className('slider-left');
+	var CLASS_SLIDER_RIGHT = $.className('slider-right');
+	var CLASS_TRANSITIONING = $.className('transitioning');
 
 
 	var SELECTOR_SLIDER_HANDLE = '.' + CLASS_SLIDER_HANDLE;
@@ -6745,7 +6746,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 			return;
 		}
 		var classList = cell.classList;
-		if (classList.contains('mui-radio')) {
+		if (classList.contains($.className('radio'))) {
 			var input = cell.querySelector('input[type=radio]');
 			if (input) {
 				//				input.click();
@@ -6754,7 +6755,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 					$.trigger(input, 'change');
 				}
 			}
-		} else if (classList.contains('mui-checkbox')) {
+		} else if (classList.contains($.className('checkbox'))) {
 			var input = cell.querySelector('input[type=checkbox]');
 			if (input) {
 				//				input.click();
@@ -6767,7 +6768,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 	};
 	//fixed hashchange(android)
 	window.addEventListener($.EVENT_CLICK, function(e) {
-		if (cell && cell.classList.contains('mui-collapse')) {
+		if (cell && cell.classList.contains($.className('collapse'))) {
 			e.preventDefault();
 		}
 	});
@@ -6798,13 +6799,13 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 			});
 			return;
 		}
-		if (classList.contains('mui-collapse') && !cell.parentNode.classList.contains('mui-unfold')) {
+		if (classList.contains($.className('collapse')) && !cell.parentNode.classList.contains($.className('unfold'))) {
 			if (!preventDefaultException.test(event.target.tagName)) {
 				event.detail.gesture.preventDefault();
 			}
 
 			if (!classList.contains(CLASS_ACTIVE)) { //展开时,需要收缩其他同类
-				var collapse = cell.parentNode.querySelector('.mui-collapse.mui-active');
+				var collapse = cell.parentNode.querySelector($.classSelector('.collapse.active'));
 				if (collapse) {
 					collapse.classList.remove(CLASS_ACTIVE);
 				}
@@ -6946,7 +6947,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 
 })(mui, window);
 (function($, window) {
-	var CLASS_ACTIVE = 'mui-active';
+	var CLASS_ACTIVE = $.className('active');
 	/**
 	 * 自动消失提示框
 	 */
@@ -6960,8 +6961,8 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 			});
 		} else {
 			var toast = document.createElement('div');
-			toast.classList.add('mui-toast-container');
-			toast.innerHTML = '<div class="' + 'mui-toast-message' + '">' + message + '</div>';
+			toast.classList.add($.className('toast-container'));
+			toast.innerHTML = '<div class="' + $.className('toast-message') + '">' + message + '</div>';
 			toast.addEventListener('webkitTransitionEnd', function() {
 				if (!toast.classList.contains(CLASS_ACTIVE)) {
 					toast.parentNode.removeChild(toast);
@@ -6984,19 +6985,19 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
  * @param {Object} document
  */
 (function($, window, document) {
-	var CLASS_POPUP = 'mui-popup';
-	var CLASS_POPUP_BACKDROP = 'mui-popup-backdrop';
-	var CLASS_POPUP_IN = 'mui-popup-in';
-	var CLASS_POPUP_OUT = 'mui-popup-out';
-	var CLASS_POPUP_INNER = 'mui-popup-inner';
-	var CLASS_POPUP_TITLE = 'mui-popup-title';
-	var CLASS_POPUP_TEXT = 'mui-popup-text';
-	var CLASS_POPUP_INPUT = 'mui-popup-input';
-	var CLASS_POPUP_BUTTONS = 'mui-popup-buttons';
-	var CLASS_POPUP_BUTTON = 'mui-popup-button';
-	var CLASS_POPUP_BUTTON_BOLD = 'mui-popup-button-bold';
-	var CLASS_POPUP_BACKDROP = 'mui-popup-backdrop';
-	var CLASS_ACTIVE = 'mui-active';
+	var CLASS_POPUP = $.className('popup');
+	var CLASS_POPUP_BACKDROP = $.className('popup-backdrop');
+	var CLASS_POPUP_IN = $.className('popup-in');
+	var CLASS_POPUP_OUT = $.className('popup-out');
+	var CLASS_POPUP_INNER = $.className('popup-inner');
+	var CLASS_POPUP_TITLE = $.className('popup-title');
+	var CLASS_POPUP_TEXT = $.className('popup-text');
+	var CLASS_POPUP_INPUT = $.className('popup-input');
+	var CLASS_POPUP_BUTTONS = $.className('popup-buttons');
+	var CLASS_POPUP_BUTTON = $.className('popup-button');
+	var CLASS_POPUP_BUTTON_BOLD = $.className('popup-button-bold');
+	var CLASS_POPUP_BACKDROP = $.className('popup-backdrop');
+	var CLASS_ACTIVE = $.className('active');
 
 	var popupStack = [];
 	var backdrop = (function() {
@@ -7184,158 +7185,6 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 	$.confirm = createConfirm;
 	$.prompt = createPrompt;
 })(mui, window, document);
-(function($, document) {
-	var CLASS_PROGRESSBAR = 'mui-progressbar';
-	var CLASS_PROGRESSBAR_IN = 'mui-progressbar-in';
-	var CLASS_PROGRESSBAR_OUT = 'mui-progressbar-out';
-	var CLASS_PROGRESSBAR_INFINITE = 'mui-progressbar-infinite';
-
-	var SELECTOR_PROGRESSBAR = '.mui-progressbar';
-
-	var _findProgressbar = function(container) {
-		container = $(container || 'body');
-		if (container.length === 0) return;
-		container = container[0];
-		if (container.classList.contains(CLASS_PROGRESSBAR)) {
-			return container;
-		}
-		var progressbars = container.querySelectorAll(SELECTOR_PROGRESSBAR);
-		if (progressbars) {
-			for (var i = 0, len = progressbars.length; i < len; i++) {
-				var progressbar = progressbars[i];
-				if (progressbar.parentNode === container) {
-					return progressbar;
-				}
-			}
-		}
-	};
-	/**
-	 * 创建并显示进度条 
-	 * @param {Object} container  可选，默认body，支持selector,DOM Node,mui wrapper
-	 * @param {Object} progress 可选，undefined表示循环，数字表示具体进度
-	 * @param {Object} color 可选，指定颜色样式(目前暂未提供实际样式，可暂时不暴露此参数)
-	 */
-	var showProgressbar = function(container, progress, color) {
-		if (typeof container === 'number') {
-			color = progress;
-			progress = container;
-			container = 'body';
-		}
-		container = $(container || 'body');
-		if (container.length === 0) return;
-		container = container[0];
-		var progressbar;
-		if (container.classList.contains(CLASS_PROGRESSBAR)) {
-			progressbar = container;
-		} else {
-			var progressbars = container.querySelectorAll(SELECTOR_PROGRESSBAR + ':not(.' + CLASS_PROGRESSBAR_OUT + ')');
-			if (progressbars) {
-				for (var i = 0, len = progressbars.length; i < len; i++) {
-					var _progressbar = progressbars[i];
-					if (_progressbar.parentNode === container) {
-						progressbar = _progressbar;
-						break;
-					}
-				}
-			}
-			if (!progressbar) {
-				progressbar = document.createElement('span');
-				progressbar.className = CLASS_PROGRESSBAR + ' ' + CLASS_PROGRESSBAR_IN + (typeof progress !== 'undefined' ? '' : (' ' + CLASS_PROGRESSBAR_INFINITE)) + (color ? (' ' + CLASS_PROGRESSBAR + '-' + color) : '');
-				if (typeof progress !== 'undefined') {
-					progressbar.innerHTML = '<span></span>';
-				}
-				container.appendChild(progressbar);
-			} else {
-				progressbar.classList.add(CLASS_PROGRESSBAR_IN);
-			}
-		}
-		if (progress) setProgressbar(container, progress);
-		return progressbar;
-	};
-	/**
-	 * 关闭进度条 
-	 * @param {Object} container 可选，默认body，支持selector,DOM Node,mui wrapper
-	 */
-	var hideProgressbar = function(container) {
-		var progressbar = _findProgressbar(container);
-		if (!progressbar) {
-			return;
-		}
-		var classList = progressbar.classList;
-		if (!classList.contains(CLASS_PROGRESSBAR_IN) || classList.contains(CLASS_PROGRESSBAR_OUT)) {
-			return;
-		}
-		classList.remove(CLASS_PROGRESSBAR_IN);
-		classList.add(CLASS_PROGRESSBAR_OUT);
-		progressbar.addEventListener('webkitAnimationEnd', function() {
-			progressbar.parentNode && progressbar.parentNode.removeChild(progressbar);
-			progressbar = null;
-		});
-		return;
-	};
-	/**
-	 * 设置指定进度条进度 
-	 * @param {Object} container  可选，默认body，支持selector,DOM Node,mui wrapper
-	 * @param {Object} progress 可选，默认0 取值范围[0-100]
-	 * @param {Object} speed 进度条动画时间
-	 */
-	var setProgressbar = function(container, progress, speed) {
-		if (typeof container === 'number') {
-			speed = progress;
-			progress = container;
-			container = false;
-		}
-		var progressbar = _findProgressbar(container);
-		if (!progressbar || progressbar.classList.contains(CLASS_PROGRESSBAR_INFINITE)) {
-			return;
-		}
-		if (progress) progress = Math.min(Math.max(progress, 0), 100);
-		progressbar.offsetHeight;
-		var span = progressbar.querySelector('span');
-		if (span) {
-			var style = span.style;
-			style.webkitTransform = 'translate3d(' + (-100 + progress) + '%,0,0)';
-			if (typeof speed !== 'undefined') {
-				style.webkitTransitionDuration = speed + 'ms';
-			} else {
-				style.webkitTransitionDuration = '';
-			}
-		}
-		return progressbar;
-	};
-	$.fn.progressbar = function(options) {
-		var progressbarApis = [];
-		options = options || {};
-		this.each(function() {
-			var self = this;
-			var progressbarApi = self.mui_plugin_progressbar;
-			if (!progressbarApi) {
-				self.mui_plugin_progressbar = progressbarApi = {
-					options: options,
-					setOptions: function(options) {
-						this.options = options;
-					},
-					show: function() {
-						return showProgressbar(self, this.options.progress, this.options.color);
-					},
-					setProgress: function(progress) {
-						return setProgressbar(self, progress);
-					},
-					hide: function() {
-						return hideProgressbar(self);
-					}
-				};
-			} else if (options) {
-				progressbarApi.setOptions(options);
-			}
-			progressbarApis.push(progressbarApi);
-		});
-		return progressbarApis.length === 1 ? progressbarApis[0] : progressbarApis;
-	};
-	//	$.setProgressbar = setProgressbar;
-	//	$.showProgressbar = showProgressbar;
-	//	$.hideProgressbar = hideProgressbar;
-})(mui, document);
 /**
  * Input(TODO resize)
  * @param {type} $
@@ -7344,16 +7193,16 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
  * @returns {undefined}
  */
 (function($, window, document) {
-	var CLASS_ICON = 'mui-icon';
-	var CLASS_ICON_CLEAR = 'mui-icon-clear';
-	var CLASS_ICON_SPEECH = 'mui-icon-speech';
-	var CLASS_ICON_SEARCH = 'mui-icon-search';
-	var CLASS_ICON_PASSWORD = 'mui-icon-eye';
-	var CLASS_INPUT_ROW = 'mui-input-row';
-	var CLASS_PLACEHOLDER = 'mui-placeholder';
-	var CLASS_TOOLTIP = 'mui-tooltip';
-	var CLASS_HIDDEN = 'mui-hidden';
-	var CLASS_FOCUSIN = 'mui-focusin';
+	var CLASS_ICON = $.className('icon');
+	var CLASS_ICON_CLEAR = $.className('icon-clear');
+	var CLASS_ICON_SPEECH = $.className('icon-speech');
+	var CLASS_ICON_SEARCH = $.className('icon-search');
+	var CLASS_ICON_PASSWORD = $.className('icon-eye');
+	var CLASS_INPUT_ROW = $.className('input-row');
+	var CLASS_PLACEHOLDER = $.className('placeholder');
+	var CLASS_TOOLTIP = $.className('tooltip');
+	var CLASS_HIDDEN = $.className('hidden');
+	var CLASS_FOCUSIN = $.className('focusin');
 	var SELECTOR_ICON_CLOSE = '.' + CLASS_ICON_CLEAR;
 	var SELECTOR_ICON_SPEECH = '.' + CLASS_ICON_SPEECH;
 	var SELECTOR_ICON_PASSWORD = '.' + CLASS_ICON_PASSWORD;
@@ -7446,7 +7295,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 				action.innerHTML = '<span class="' + CLASS_ICON + ' ' + CLASS_ICON_SEARCH + '"></span><span>' + this.element.getAttribute('placeholder') + '</span>';
 				this.element.setAttribute('placeholder', '');
 				if (this.element.value.trim()) {
-					row.classList.add('mui-active');
+					row.classList.add($.className('active'));
 				}
 			}
 			row.insertBefore(action, this.element.nextSibling);
@@ -7499,11 +7348,11 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 			}
 			if (this.searchActionClass) {
 				element.addEventListener('focus', function() {
-					element.parentNode.classList.add('mui-active');
+					element.parentNode.classList.add($.className('active'));
 				});
 				element.addEventListener('blur', function() {
 					if (!element.value.trim()) {
-						element.parentNode.classList.remove('mui-active');
+						element.parentNode.classList.remove($.className('active'));
 					}
 				});
 			}
@@ -7523,7 +7372,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 		} else {
 			this.element.type = 'text';
 		}
-		this.passwordAction.classList.toggle('mui-active');
+		this.passwordAction.classList.toggle($.className('active'));
 		event.preventDefault();
 	};
 	Input.prototype.clearActionClick = function(event) {
@@ -7567,20 +7416,20 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 			var inputApi = null;
 			var actions = [];
 			var row = findRow(this.parentNode);
-			if (this.type === 'range' && row.classList.contains('mui-input-range')) {
+			if (this.type === 'range' && row.classList.contains($.className('input-range'))) {
 				actions.push('slider');
 			} else {
 				var classList = this.classList;
-				if (classList.contains('mui-input-clear')) {
+				if (classList.contains($.className('input-clear'))) {
 					actions.push('clear');
 				}
-				if (!($.os.android && $.os.stream) && classList.contains('mui-input-speech')) {
+				if (!($.os.android && $.os.stream) && classList.contains($.className('input-speech'))) {
 					actions.push('speech');
 				}
-				if (classList.contains('mui-input-password')) {
+				if (classList.contains($.className('input-password'))) {
 					actions.push('password');
 				}
-				if (this.type === 'search' && row.classList.contains('mui-search')) {
+				if (this.type === 'search' && row.classList.contains($.className('search'))) {
 					actions.push('search');
 				}
 			}
@@ -7601,7 +7450,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 		return inputApis.length === 1 ? inputApis[0] : inputApis;
 	};
 	$.ready(function() {
-		$('.mui-input-row input').input();
+		$($.classSelector('.input-row input')).input();
 	});
 })(mui, window, document);
 /**
@@ -7616,10 +7465,10 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 	var touchSupport = ('ontouchstart' in document);
 	var tapEventName = touchSupport ? 'tap' : 'click';
 	var changeEventName = 'change';
-	var holderClassName = 'mui-numbox';
-	var plusClassSelector = '.mui-btn-numbox-plus,.mui-numbox-btn-plus';
-	var minusClassSelector = '.mui-btn-numbox-minus,.mui-numbox-btn-minus';
-	var inputClassSelector = '.mui-input-numbox,.mui-numbox-input';
+	var holderClassName = $.className('numbox');
+	var plusClassSelector = $.classSelector('.btn-numbox-plus,.numbox-btn-plus');
+	var minusClassSelector = $.classSelector('.btn-numbox-minus,.numbox-btn-minus');
+	var inputClassSelector = $.classSelector('.input-numbox,.numbox-input');
 
 	var Numbox = $.Numbox = $.Class.extend({
 		/**
